@@ -7,8 +7,15 @@ import '../styles/pages/oprphanage-map.css';
 import mapIcon from '../utils/mapIcon';
 import api from '../services/api';
 
-function OrphanagesMap() {
-  const [orphanages, setOrphanages] = useState([]);
+interface Orphanage {
+  id: number;
+  latitude: number;
+  longitude: number;
+  name: string;
+}
+
+const OrphanagesMap: React.FC = () => {
+  const [orphanages, setOrphanages] = useState<Orphanage[]>([]);
 
   useEffect(() => {
     api.get('orphanages').then(response => {
@@ -38,15 +45,19 @@ function OrphanagesMap() {
 
         {orphanages.map(orphanage => {
           return (
-            <Marker icon={mapIcon} position={[-30.0425505, -51.2293191]}>
+            <Marker
+              icon={mapIcon}
+              position={[orphanage.latitude, orphanage.longitude]}
+              key={orphanage.id}
+            >
               <Popup
                 closeButton={false}
                 minWidth={240}
                 maxWidth={240}
                 className="map-popup"
               >
-                Lar das meninas
-                <Link to="/orphanages/create">
+                {orphanage.name}
+                <Link to={`/orphanages/${orphanage.id}`}>
                   <FiArrowRight size={20} color="#FFF" />
                 </Link>
               </Popup>
@@ -54,11 +65,11 @@ function OrphanagesMap() {
           );
         })}
       </Map>
-      <Link to="/orphanage/1" className="create-orphanage">
+      <Link to="/orphanages/create" className="create-orphanage">
         <FiPlus size={32} color="#FFF" />
       </Link>
     </div>
   );
-}
+};
 
 export default OrphanagesMap;
