@@ -8,3 +8,6 @@
 ## LEAFLET 
   # yarn add leaflet react-leaflet
   # yarn add @types/react-leaflet -D
+
+## AXIOS
+  # yarn add axios
